@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  postgres:
+    container_name: postgres_${NODE_ENV}
+    image: postgres:latest
+    environment:
+      POSTGRES_PASSWORD: ${TYPEORM_PASSWORD}
+      POSTGRES_USER: ${TYPEORM_USERNAME}
+      POSTGRES_DB: '${TYPEORM_DATABASE}'
+      PG_DATA: /var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    volumes:
+      - ./pgdata/data:/var/lib/postgresql/data
+
+  pgadmin:
+    container_name: pgadmin_${NODE_ENV}
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+    volumes:
+      - ./pgdata/pgadmin:/root/.pgadmin
+    ports:
+      - '5050:80'
+
+  # api:
+  #   container_name: eatnact_api_admin${NODE_ENV}
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   env_file:
+  #     - .env
+  #   ports:
+  #     - ${APP_PORT}:${APP_PORT}
+  #   expose:
+  #     - ${APP_PORT}
+  #   depends_on:
+  #     - postgres
+  #   volumes:
+  #     - .:/usr/src/app
+  #     - /usr/src/app/node_modules
+  #   restart: always

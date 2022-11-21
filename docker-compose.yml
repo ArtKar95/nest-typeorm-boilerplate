@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  api:
+    container_name: eatnact_api_admin_${NODE_ENV}
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    ports:
+      - ${APP_PORT}:${APP_PORT}
+    expose:
+      - ${APP_PORT}
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    restart: always
